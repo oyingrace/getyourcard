@@ -44,9 +44,9 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
           userImg.onload = () => {
             // Calculate circular photo position based on the frame
             // These coordinates are specific to your frame design - positioned on the right side
-            const photoX = 600 // Center X of the circular area (right side)
-            const photoY = 330 // Center Y of the circular area (moved up)
-            const photoRadius = 120 // Radius of the circular photo area
+            const photoX = 560 // Center X of the circular area (right side)
+            const photoY = 317 // Center Y of the circular area (moved up)
+            const photoRadius = 105 // Radius of the circular photo area
 
             // Create circular clipping mask
             ctx.save()
