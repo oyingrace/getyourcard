@@ -79,6 +79,8 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
         }
 
         function drawText() {
+          if (!ctx) return
+          
           // Draw name - positioned on the right side below the emblem
           if (userData.name) {
             ctx.font = 'bold 48px Arial'
@@ -89,7 +91,7 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
             ctx.shadowOffsetY = 2
             
             // Position for name text (right side, below emblem)
-            const nameX = 600 // Right side of the canvas
+            const nameX = 550 // Right side of the canvas
             const nameY = 580
             ctx.fillText(userData.name, nameX, nameY)
           }
@@ -104,7 +106,7 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
             ctx.shadowOffsetY = 2
             
             // Position for role text (right side, below name)
-            const roleX = 600 // Right side of the canvas
+            const roleX = 550 // Right side of the canvas
             const roleY = 630
             ctx.fillText(userData.role, roleX, roleY)
           }
