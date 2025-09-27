@@ -40,10 +40,10 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">
           Create Your H.E.R. DAO Member Badge
         </h1>
-        <p className="text-gray-300">
+        <p className="text-gray-800">
           Generate your personalized membership badge and share it
         </p>
       </div>
@@ -59,7 +59,7 @@ export default function Home() {
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-md font-semibold text-white mb-4">
+            <h2 className="text-md font-semibold text-gray-800 mb-4">
               Profile Photo
             </h2>
             <ImageUpload
@@ -76,11 +76,11 @@ export default function Home() {
               disabled={!isFormValid}
               className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-200 ${
                 isFormValid
-                  ? 'bg-gradient-to-r from-primary to-secondary hover:from-primary/80 hover:to-secondary/80 text-white shadow-lg hover:shadow-xl'
-                  : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  ? 'bg-primary-pink text-white shadow-lg hover:shadow-xl'
+                  : 'bg-primary-pink/30 text-white/60 cursor-not-allowed'
               }`}
             >
-              {isFormValid ? 'Generate' : 'Generate'}
+              {showGenerated ? 'Ready' : (isFormValid ? 'Generate' : 'Generate')}
             </button>
             
             {!isFormValid && (
@@ -104,11 +104,7 @@ export default function Home() {
 
         {/* Right side - Generated ID */}
         {showGenerated && (
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">
-              Your Generated ID Badge
-            </h2>
-            
+          <div className="backdrop-blur-sm rounded-xl p-6">
             <IDGenerator
               userData={userData}
               shouldGenerate={showGenerated}

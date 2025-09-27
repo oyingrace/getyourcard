@@ -3,20 +3,22 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --secondary-pink: #FF9CCC;
+  --primary-pink: #981957;
+  --primary: #981957;
+  --secondary: #FF9CCC;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-secondary-pink: var(--secondary-pink);
+  --color-primary-pink: var(--primary-pink);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --font-sans: var(--font-poppins);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
 
 body {
   background: var(--background);

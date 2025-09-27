@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import { UserData } from '@/app/page'
+import { Download, Upload, RotateCcw } from 'lucide-react'
 
 interface IDGeneratorProps {
   userData: UserData
@@ -146,34 +147,48 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
     link.click()
   }
 
-  const handleShare = async () => {
+  const handleShare = () => {
     if (!generatedImageUrl) return
 
-    try {
-      // Convert data URL to blob for sharing
-      const response = await fetch(generatedImageUrl)
-      const blob = await response.blob()
-      const file = new File([blob], `${userData.name.replace(/\s+/g, '_')}_HER_DAO_Badge.png`, { type: 'image/png' })
+    const text = `I'm thrilled to announce that I just became a member of H.E.R. DAO! 🎉
 
-      if (navigator.share && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: 'My H.E.R DAO Event ID',
-          text: 'Check out my H.E.R DAO event badge!',
-          files: [file]
-        })
-      } else {
-        // Fallback: download
-        handleDownload()
-      }
-    } catch (error) {
-      console.error('Error sharing:', error)
-      handleDownload()
+${window.location.href}`
+    
+    // Check if it's a mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    
+    if (isMobile) {
+      // Try Twitter app first on mobile
+      const twitterAppUrl = `twitter://post?message=${encodeURIComponent(text)}`
+      const twitterWebUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`
+      
+      // Create a temporary link to test if the app is available
+      const link = document.createElement('a')
+      link.href = twitterAppUrl
+      link.style.display = 'none'
+      document.body.appendChild(link)
+      
+      // Try to open the app, fallback to web after a short delay
+      const timeout = setTimeout(() => {
+        window.open(twitterWebUrl, '_blank')
+      }, 1000)
+      
+      link.click()
+      
+      // Clear timeout if app opens successfully
+      setTimeout(() => {
+        clearTimeout(timeout)
+        document.body.removeChild(link)
+      }, 100)
+    } else {
+      // Direct web sharing for desktop
+      const twitterWebUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`
+      window.open(twitterWebUrl, '_blank')
     }
   }
 
-  const handleRegenerateWithChanges = () => {
-    setGeneratedImageUrl(null)
-    generateID()
+  const handleStartFresh = () => {
+    window.location.reload()
   }
 
   return (
@@ -193,25 +208,24 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
             <div className="w-full max-w-md mx-auto aspect-square bg-gray-800 rounded-lg flex items-center justify-center">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-white font-medium">Generating your ID badge...</p>
-                <p className="text-gray-400 text-sm">This will take just a moment</p>
+                <p className="text-white font-medium">Generating...</p>
               </div>
             </div>
           ) : generatedImageUrl ? (
             <div className="text-center">
+              <div className="mb-4 p-4">
+                <h2 className="text-gray-800 text-2xl font-semibold mb-2">Your Badge is Ready!</h2>
+                <p className="text-gray-800 text-sm">Welcome to H.E.R. DAO, {userData.name}! 🎉</p>
+              </div>
               <img
                 src={generatedImageUrl}
                 alt="Generated ID Badge"
                 className="w-full max-w-md mx-auto rounded-lg shadow-2xl border-2 border-primary/30"
               />
-              <div className="mt-4 p-4 bg-green-900/20 rounded-lg border border-green-500/30">
-                <p className="text-green-400 font-medium mb-2">✓ ID Badge Generated Successfully!</p>
-                <p className="text-gray-300 text-sm">Your personalized H.E.R DAO event badge is ready</p>
-              </div>
             </div>
           ) : (
             <div className="w-full max-w-md mx-auto aspect-square bg-gray-800 rounded-lg flex items-center justify-center">
-              <p className="text-gray-400">Click "Generate ID Badge" to create your badge</p>
+              <p className="text-gray-400">Click "Generate" to create your badge</p>
             </div>
           )}
         </div>
@@ -219,40 +233,34 @@ export default function IDGenerator({ userData, shouldGenerate }: IDGeneratorPro
 
       {/* Action buttons */}
       {generatedImageUrl && !isGenerating && (
-        <div className="space-y-4">
-          <div className="flex gap-3 justify-center">
+        <div className="space-y-5">
+          <button
+            onClick={handleShare}
+            className="w-full px-8 py-3 bg-primary text-white rounded-lg 
+                       font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+          >
+            <Upload className="w-5 h-5" />
+            Share on X
+          </button>
+
+          <div className="flex gap-3">
             <button
               onClick={handleDownload}
-              className="px-8 py-3 bg-primary hover:bg-primary/80 text-white rounded-lg 
-                         font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
+              className="flex-1 px-8 py-3 bg-white text-primary-pink rounded-lg border border-secondary-pink
+                         font-semibold flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M12 10v6m0 0l-4-4m4 4l4-4m5-4H7a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2z" />
-              </svg>
-              Download Badge
+              <Download className="w-5 h-5" />
+              Download
             </button>
             
             <button
-              onClick={handleShare}
-              className="px-8 py-3 bg-secondary hover:bg-secondary/80 text-white rounded-lg 
-                         font-semibold transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl"
+              onClick={handleStartFresh}
+              className="flex-1 px-6 py-3 bg-white text-primary-pink rounded-lg 
+                         font-medium transition-colors text-sm border border-secondary-pink flex items-center 
+                         justify-center gap-2 hover:shadow-xl"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-              </svg>
-              Share Badge
-            </button>
-          </div>
-
-          <div className="text-center">
-            <button
-              onClick={handleRegenerateWithChanges}
-              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg 
-                         font-medium transition-colors text-sm"
-            >
-              Regenerate with Current Data
+              <RotateCcw className="w-5 h-5" />
+              Create New
             </button>
           </div>
         </div>
