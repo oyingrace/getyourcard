@@ -41,10 +41,10 @@ export default function Home() {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-white mb-2">
-          H.E.R DAO Event ID Generator
+          Create Your H.E.R. DAO Member Badge
         </h1>
         <p className="text-gray-300">
-          Create your personalized event badge
+          Generate your personalized membership badge and share it
         </p>
       </div>
 
@@ -52,24 +52,21 @@ export default function Home() {
         {/* Left side - Form inputs */}
         <div className="space-y-6">
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">
-              Upload Your Photo
-            </h2>
-            <ImageUpload
-              onImageSelect={(imageUrl) => handleUserDataChange('image', imageUrl)}
-              acceptedTypes="image/*"
-              label="Upload Your Profile Picture"
-              className="mb-4"
+            <UserForm
+              userData={userData}
+              onDataChange={handleUserDataChange}
             />
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-white mb-4">
-              Your Information
+            <h2 className="text-md font-semibold text-white mb-4">
+              Profile Photo
             </h2>
-            <UserForm
-              userData={userData}
-              onDataChange={handleUserDataChange}
+            <ImageUpload
+              onImageSelect={(imageUrl) => handleUserDataChange('image', imageUrl)}
+              acceptedTypes="image/*"
+              label=""
+              className="mb-4"
             />
           </div>
 
@@ -83,7 +80,7 @@ export default function Home() {
                   : 'bg-gray-600 text-gray-400 cursor-not-allowed'
               }`}
             >
-              {isFormValid ? 'Generate ID Badge' : 'Fill all fields to generate'}
+              {isFormValid ? 'Generate' : 'Generate'}
             </button>
             
             {!isFormValid && (
@@ -105,31 +102,19 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Right side - Generated ID or Preview */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">
-            {showGenerated ? 'Your Generated ID Badge' : 'Preview'}
-          </h2>
-          
-          {showGenerated ? (
+        {/* Right side - Generated ID */}
+        {showGenerated && (
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-white mb-4">
+              Your Generated ID Badge
+            </h2>
+            
             <IDGenerator
               userData={userData}
               shouldGenerate={showGenerated}
             />
-          ) : (
-            <div className="flex items-center justify-center h-96 border-2 border-dashed border-gray-600 rounded-xl">
-              <div className="text-center text-gray-400">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gray-700 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <p className="text-lg font-medium">ID Badge Preview</p>
-                <p className="text-sm">Complete the form and click generate to see your badge</p>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )

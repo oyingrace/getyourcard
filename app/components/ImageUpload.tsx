@@ -113,10 +113,10 @@ export default function ImageUpload({
             </div>
             <p className="text-white font-medium">{label}</p>
             <p className="text-gray-400 text-sm">
-              Drag and drop or click to browse
+              Click to upload
             </p>
             <p className="text-gray-500 text-xs">
-              Supports: JPG, PNG, GIF (Max: 10MB)
+              JPG, PNG, GIF up to 10MB
             </p>
           </div>
         )}
