@@ -1,6 +1,6 @@
 # H.E.R. DAO Member Badge Generator
 
-![Sample Badge](/sample.png)
+![Sample Badge](/public/sample.png)
 
 A modern web application that allows users to create personalized membership badges for H.E.R. DAO. Generate your unique member badge with your photo, name, and role, then share it on social media to celebrate joining the community.
 
