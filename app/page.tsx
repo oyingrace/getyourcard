@@ -80,7 +80,7 @@ export default function Home() {
                   : 'bg-primary-pink/30 text-white/60 cursor-not-allowed'
               }`}
             >
-              {showGenerated ? 'Ready' : (isFormValid ? 'Generate' : 'Generate')}
+              {showGenerated ? 'Ready 👇' : (isFormValid ? 'Generate' : 'Generate')}
             </button>
             
             {!isFormValid && (
